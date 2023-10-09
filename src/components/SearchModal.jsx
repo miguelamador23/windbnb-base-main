@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-const SearchModal = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+const SearchModal = ({ data, onFilter }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [selectedLocation, setSelectedLocation] = useState(null);
 
   const openModal = () => {
     setModalVisible(true);
@@ -10,6 +11,18 @@ const SearchModal = () => {
   const closeModal = () => {
     setModalVisible(false);
   };
+
+  const handleLocationClick = (location) => {
+    setSelectedLocation(location);
+    closeModal();
+    onFilter(location);
+  };
+
+  const locations = [
+    { city: 'Helsinki', country: 'Finland' },
+    { city: 'Turku', country: 'Finland' },
+    { city: 'Oulu', country: 'Finland' },
+  ];
 
   const modalStyles = {
     display: modalVisible ? 'block' : 'none',
@@ -20,7 +33,7 @@ const SearchModal = () => {
     width: '100%',
     height: '100%',
     overflow: 'auto',
-    backgroundColor: 'rgba(0,0,0,0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
   };
 
   const modalContentStyles = {
@@ -53,7 +66,6 @@ const SearchModal = () => {
     backgroundColor: '#007BFF',
     color: 'white',
     padding: '10px',
-    border: '1px solid black', 
     cursor: 'pointer',
     margin: '8px 0',
     borderRadius: '10px',
@@ -65,32 +77,78 @@ const SearchModal = () => {
     top: '20px',
     right: '20px',
     cursor: 'pointer',
+  };
+
+  const buttonStyles = {
+    border: '1px solid black',
     color: 'black',
-    borderRadius: '4px'
+    borderRadius: '4px',
+    backgroundColor: 'transparent',
+    padding: '10px 20px',
+    fontSize: '14px',
+    boxShadow: '2px 2px 3px rgba(0, 0, 0, 0.3)',
+    transition: 'box-shadow 0.3s ease',
+  };
+
+  const locationButtonStyles = {
+    backgroundColor: 'transparent',
+    border: '1px solid black',
+    borderRadius: '4px',
+    padding: '10px 20px',
+    fontSize: '14px',
+    boxShadow: '2px 2px 3px rgba(0, 0, 0, 0.3)',
+    transition: 'box-shadow 0.3s ease',
+  };
+
+  const guestButtonStyles = {
+    backgroundColor: 'transparent',
+    border: '1px solid black',
+    borderRadius: '4px',
+    padding: '10px 20px',
+    fontSize: '14px',
+    boxShadow: '2px 2px 3px rgba(0, 0, 0, 0.3)',
+    transition: 'box-shadow 0.3s ease',
+  };
+
+  const buttonTitleStyles = {
+    fontWeight: 'bold',
+  };
+
+  const buttonSubtitleStyles = {
+    fontSize: '14px',
+    color: 'gray',
   };
 
   return (
     <div>
       <div class="btn-group" role="group" aria-label="Basic outlined example" style={showButtonStyles}>
-        <button onClick={openModal} className="btn btn-outline-primary">Whole, Finland</button>
-        <button className="btn btn-outline-primary">Add guests</button>
-        <button className="btn btn-outline-primary">Buscar</button>
+        <button onClick={openModal} className="btn btn-outline-primary" style={buttonStyles}>
+          Whole, Finland
+        </button>
+        <button className="btn btn-outline-primary" style={buttonStyles}>
+          Add guests
+        </button>
+        <button onClick={openModal} className="btn btn-outline-primary" style={buttonStyles}>
+          Buscar
+        </button>
       </div>
+
       <div style={modalStyles}>
         <div style={modalContentStyles}>
           <span style={closeModalStyles} onClick={closeModal}>&times;</span>
           <div style={searchContainerStyles}>
-            <input
-              type="text"
-              placeholder="Ciudad que estamos buscando"
-              style={searchInputStyles}
-            />
-            <input
-              type="number"
-              placeholder="Cantidad de huéspedes"
-              style={searchInputStyles}
-            />
-            <button style={searchButtonStyles} className="btn btn-outline-light">Buscar</button>
+            <button style={locationButtonStyles}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={buttonTitleStyles}>Location</div>
+                <div style={buttonSubtitleStyles}>Whole, Finland</div>
+              </div>
+            </button>
+            <button style={guestButtonStyles}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={buttonTitleStyles}>Guest</div>
+                <div style={buttonSubtitleStyles}>0</div>
+              </div>
+            </button>
           </div>
         </div>
       </div>
